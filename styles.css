@@ -1,0 +1,55 @@
+td {
+  width: 50px;
+  height: 50px;
+}
+.empty {
+  background: #ffffff;
+  border: 2px solid black;
+}
+.ship {
+  background: #878787;
+  border: 2px solid black;
+}
+.shipGreen {
+  background: green;
+  border: 2px solid black;
+}
+.shipOrange {
+  background: orange;
+  border: 2px solid black;
+}
+.shipBlue {
+  background: #0047c1;
+  border: 2px solid black;
+}
+.miss {
+  background: #000000;
+  border: 2px solid black;
+  color: white;
+}
+.hit {
+  background: #ff0000;
+  border: 2px solid black;
+}
+#shipDiv {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+}
+
+#shipImg {
+  width: 300px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#error {
+  color: red;
+}
+
+#board2 {
+  margin-top: 100px;
+}

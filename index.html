@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="text/javascript" src="view.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+
+    <title>BattleShip Home</title>
+  </head>
+  <body>
+    <div>
+      <h1>Log In</h1>
+      <div>
+        <label for="username">Username</label>
+        <input id="username" type="text" />
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input id="password" type="password" />
+      </div>
+      <button onclick="postUsername()">Log In</button>
+      <p id="error"></p>
+    </div>
+    <h1>Preliminary Software Design</h1>
+    <a href="./grid.html">To The Game Grid</a>
+    <h3>Model</h3>
+    <h4>Constants</h4>
+    <table>
+      <thead>
+        <tr>
+          Possible Square Contents
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Empty -</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>Ship -</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>Miss -</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td>Hit -</td>
+          <td>3</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      The value in the grid will determine what color and text is in each square
+    </p>
+    <h4>Player</h4>
+    <p>Each Player will be assigned:</p>
+    <ul>
+      <li>ID (1 or 2): integer</li>
+      <li>Name: string</li>
+      <li>Game Board: table with their ships</li>
+    </ul>
+
+    <h4>Game</h4>
+    <p>Each Game will have:</p>
+    <ul>
+      <li>2 Players</li>
+      <li>Current Player: integer</li>
+      <li>Game Over: boolean</li>
+    </ul>
+
+    <h3>Functions/Methods</h3>
+    <h4>placeShip(ship, startRow, startCol, endRow, endCol)</h4>
+    <p>
+      The player will be able to select the positions of their ships to start
+      each game
+    </p>
+
+    <h4>shootShip(row, col)</h4>
+    <p>
+      A player will click on the other players board. Depending on the content
+      of the square they click the square will indicate a hit, or miss on the
+      other players board
+    </p>
+  </body>
+</html>
