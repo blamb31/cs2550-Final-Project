@@ -53,3 +53,29 @@ td {
 #board2 {
   margin-top: 100px;
 }
+
+#inputDiv {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#colorDiv {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+}
+
+#colorDiv > p {
+  margin-right: 10px;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+body {
+  padding: 50px;
+}
+#canvas2 {
+  margin-left: 75px;
+}

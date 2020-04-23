@@ -21,23 +21,65 @@ let hit = {
     w: null,
   },
 };
+function drawStar(ctx) {
+  ctx.fillStyle = "black";
+  ctx.beginPath();
+  ctx.moveTo(108, 0.0);
+  ctx.lineTo(141, 70);
+  ctx.lineTo(218, 78.3);
+  ctx.lineTo(162, 131);
+  ctx.lineTo(175, 205);
+  ctx.lineTo(108, 170);
+  ctx.lineTo(41.2, 205);
+  ctx.lineTo(55, 131);
+  ctx.lineTo(1, 78);
+  ctx.lineTo(75, 68);
+  ctx.lineTo(108, 0);
+  ctx.closePath();
+  ctx.fill();
+}
+function playAudio() {
+  tigerAud = document.getElementById("tigerAudio");
+  console.log(tigerAud);
+  console.log(tigerAud.play);
+  tigerAud.play();
 
+  explosionVid = document.getElementById("explosionVid");
+  console.log(explosionVid);
+  explosionVid.play();
+  var canvas = document.getElementById("canvas1");
+  var c1 = canvas.getContext("2d");
+  drawStar(c1);
+  var canvas = document.getElementById("canvas2");
+  var c2 = canvas.getContext("2d");
+  drawStar(c2);
+}
+const body = document.getElementsByTagName("body");
+console.log(body);
+document.addEventListener("click", function () {
+  console.log("The window loaded");
+  playAudio();
+});
+function newGame() {
+  const confirmNewGame = confirm(
+    "You are about to start a new game with new boards. Are you sure you want to do this?"
+  );
+  if (confirmNewGame) {
+    location.reload(true);
+  }
+}
 function getSquare1Value(row, col) {
-  console.log({ row, col });
   if ((row || col) < 0 || (row || col) > 9) {
     return null;
   } else {
     return player.grid[row][col];
   }
-  // console.log({ retVal, row, col });
 }
 function getSquare2Value(row, col) {
   return player2.grid[row][col];
-  // console.log({ retVal, row, col });
 }
 
 function changeValue(row, col, value) {
-  // console.log("inchangeval", row, col, value);
   if (player.active) {
     player2.grid[row][col] = value;
   } else {
@@ -61,7 +103,6 @@ function changePlayerTurn() {
     player.active = true;
     player2.active = false;
   }
-  console.log("player2 is active: ", player2.active);
   displayActivePlayer();
 
   if (player2.active) {
@@ -73,15 +114,9 @@ function checkIfGameOver() {
   let gO1 = false;
   let gO2 = false;
   gameOver = true;
-  // console.log("p1");
   for (let row in player.grid) {
-    // console.log({ row });
     for (let sq of player.grid[row]) {
-      // console.log({ sq });
-
       if (sq === 1) {
-        // console.log("THE GAME IS NOT OVER YET", gameOver);
-
         gameOver = false;
       }
     }
@@ -89,24 +124,15 @@ function checkIfGameOver() {
   if (gameOver) {
     gO1 = true;
   } else {
-    // console.log("ACTUALLY IT MIGHT BE OVER", gameOver);
-
     gameOver = true;
-    // console.log("p2");
 
     for (let row in player2.grid) {
-      // console.log({ row });
-
       for (let sq of player2.grid[row]) {
-        // console.log({ sq });
-
         if (sq === 1) {
-          // console.log("THE GAME IS NOT OVER YET", gameOver);
           gameOver = false;
         }
       }
     }
-    // console.log("IS IT OVER???? ", gameOver);
     if (gameOver) {
       gO2 = true;
     }
@@ -130,17 +156,9 @@ function checkIfGameOver() {
 
 function aiMakeGuess(dir = null) {
   setTimeout(function () {
-    console.log("Making A guess");
     let guessCol, guessRow;
     //if there is a prev hit, then load that
     if (hit.row !== null && hit.row >= 0 && hit.col !== null && hit.col >= 0) {
-      console.log("there is a prev hit", hit);
-      // if (hit.tried.w === true) {
-      //   console.log("going w");
-      //   hit.row = hit.initial.row;
-      //   hit.col = hit.initial.col - 1;
-      // }
-
       guessCol = hit.col;
       guessRow = hit.row;
     } else {
@@ -150,7 +168,6 @@ function aiMakeGuess(dir = null) {
       while (guessRow < 0 || guessRow > 9) {
         guessRow = Math.round(Math.random() * 10);
       }
-      console.log({ guessRow });
       while (guessCol < 0 || guessCol > 9) {
         guessCol = Math.round(Math.random() * 10);
       }
@@ -165,11 +182,9 @@ function aiMakeGuess(dir = null) {
     }
     let val = getSquare1Value(guessRow, guessCol);
 
-    console.log({ val });
     let element = document.getElementById(
       `row${guessRow + 1}col${guessCol + 1}`
     );
-    console.log({ element });
     if (val === 0) {
       element.className = "miss space";
       element.innerHTML = "MISS";
@@ -206,7 +221,6 @@ function aiMakeGuess(dir = null) {
                   hit.tried.e = false;
                   hit.tried.w = true;
                   hit.tried.wfirst = true;
-                  console.log("wfirst 1");
                   hit.row = hit.initial.row;
                   hit.col = hit.initial.col - 1;
                 }
@@ -227,7 +241,6 @@ function aiMakeGuess(dir = null) {
                 hit.tried.e = false;
                 hit.tried.w = true;
                 hit.tried.wfirst = true;
-                console.log("wfirst 2");
               }
             }
           }
@@ -241,7 +254,6 @@ function aiMakeGuess(dir = null) {
             ) {
               if (getSquare1Value(hit.initial.row + 1, hit.initial.col) === 1) {
                 hit.tried.s = true;
-                console.log("hit s");
               } else {
                 if (
                   getSquare1Value(hit.initial.row, hit.initial.col + 1) === 1
@@ -253,7 +265,6 @@ function aiMakeGuess(dir = null) {
                   hit.tried.e = false;
                   hit.tried.w = true;
                   hit.tried.wfirst = true;
-                  console.log("wfirst 3");
                   hit.col = hit.initial.col - 1;
                 }
               }
@@ -275,7 +286,6 @@ function aiMakeGuess(dir = null) {
               hit.tried.e = false;
               hit.tried.w = true;
               hit.tried.wfirst = true;
-              console.log("wfirst 4");
             } else {
               hit.tried.s = false;
               hit.tried.e = true;
@@ -289,7 +299,6 @@ function aiMakeGuess(dir = null) {
             hit.tried.e = false;
             hit.tried.w = true;
             hit.tried.wfirst = true;
-            console.log("wfirst 5");
             hit.col = hit.initial.col - 1;
             return aiMakeGuess();
           } else {
@@ -301,16 +310,11 @@ function aiMakeGuess(dir = null) {
 
         // else if (dir ==='s')
       } else if (hit.tried.s === null || hit.tried.s === true) {
-        console.log("stating s");
-        // setTimeout(function () {
-        //   console.log(player);
-        // }, 30000);
         if (hit.row < hit.initial.row) {
           hit.row = hit.initial.row + 1;
           hit.col = hit.initial.col;
         }
         let val = getSquare1Value(hit.row, hit.col);
-        console.log("before while val = ", val, { row: hit.row, col: hit.col });
         if (val === 1 || val === 3) {
           hit.row++;
           return aiMakeGuess();
@@ -319,32 +323,24 @@ function aiMakeGuess(dir = null) {
         resetHit();
         return aiMakeGuess();
       } else if (hit.tried.e === null || hit.tried.e === true) {
-        console.log("starting e");
-
         // hit.row = hit.initial.row;
         // hit.col = hit.initial.col + 1;
         let val = getSquare1Value(hit.row, hit.col);
-        console.log("CHECKING VALUE ", { val });
         if (val === 3) {
           hit.col++;
           if (getSquare1Value(hit.row, hit.col) === 2) {
-            console.log("THE VALUE IS 2");
-
             hit.tried.e = false;
             hit.tried.w = true;
             hit.tried.wfirst = true;
-            console.log("wfirst 6");
             hit.col = hit.initial.col - 1;
           }
           if (getSquare1Value(hit.row, hit.col) === 0) {
-            console.log("THE VALUE IS 0");
             hit.tried.e = false;
             hit.tried.w = true;
             hit.tried.wfirst = true;
             aiMakeGuess();
             hit.row = hit.initial.row;
             hit.col = hit.initial.col - 1;
-            console.log("wfirst 7");
             return;
           }
           return aiMakeGuess();
@@ -353,34 +349,18 @@ function aiMakeGuess(dir = null) {
           hit.tried.e = false;
           hit.tried.w = true;
           hit.tried.wfirst = true;
-          console.log("wfirst 8");
           return aiMakeGuess();
         }
       } else if (hit.tried.w === null || hit.tried.w === true) {
-        console.log("starting w");
         // hit.row = hit.initial.row;
         // hit.col = hit.initial.col - 1;
         let val = getSquare1Value(hit.row, hit.col - 1);
-        console.log("checking west", hit.row, hit.col - 1, val);
         if (val === 1 || val === 3) {
           hit.col--;
           return aiMakeGuess();
         }
         alert("Ship has been Sunk");
         resetHit();
-        //   if (hit.initial.col - 1 >= 0) {
-        //     hit.col--;
-        //     if (
-        //       getSquare1Value(hit.row, hit.col) !== 1 ||
-        //       getSquare1Value(hit.row, hit.col)
-        //     ) {
-        //       resetHit();
-        //       alert("A ship has been sunk");
-        //       return aiMakeGuess();
-        //     } else {
-        //       return aiMakeGuess();
-        //     }
-        //   }
       }
     } else {
       // return aiMakeGuess();
@@ -391,7 +371,7 @@ function aiMakeGuess(dir = null) {
       return aiMakeGuess();
     }
     changePlayerTurn();
-  }, 500);
+  }, 250);
 }
 function resetHit() {
   hit.tried.n = null;
@@ -404,221 +384,7 @@ function resetHit() {
   hit.initial.col = null;
 }
 
-// function aiMakeGuess(dir = null) {
-//   setTimeout(function () {
-//     console.log("Making A guess");
-//     let guessCol, guessRow;
-//     if (hit.row !== null && hit.row >= 0 && hit.col !== null && hit.col >= 0) {
-//       console.log("there is a prev hit", hit);
-
-//       guessCol = hit.col;
-//       guessRow = hit.row;
-//     } else {
-//       guessRow = -1;
-//       guessCol = -1;
-//       while (guessRow < 0 || guessRow > 9) {
-//         guessRow = Math.round(Math.random() * 10);
-//       }
-//       console.log({ guessRow });
-//       while (guessCol < 0 || guessCol > 9) {
-//         guessCol = Math.round(Math.random() * 10);
-//       }
-//       console.log({ guessRow, guessCol });
-//       // if (
-//       //   !(
-//       //     getSquare1Value(guessRow, guessCol) === 0 ||
-//       //     getSquare1Value(guessRow, guessCol) === 1
-//       //   )
-//       // ) {
-//       //   guessRow = -1;
-//       //   guessCol = -1;
-//       // }
-//     }
-//     // else {
-//     //   console.log("else hit");
-//     //   guessRow = row;
-//     //   guessCol = col;
-//     // }
-
-//     let val = getSquare1Value(guessRow, guessCol);
-//     console.log({ val });
-//     let element = document.getElementById(
-//       `row${guessRow + 1}col${guessCol + 1}`
-//     );
-//     console.log({ element });
-//     if (val === 0) {
-//       element.className = "miss space";
-//       element.innerHTML = "MISS";
-//       changeValue(guessRow, guessCol, 2);
-//     } else if (val === 1) {
-//       element.className = "hit space";
-//       element.innerHTML = "HIT";
-//       changeValue(guessRow, guessCol, 3);
-//     } else if (val == 2) {
-//       // return aiMakeGuess();
-//       return;
-//     }
-
-//     if (dir !== null && val !== 1) {
-//       hit.tried[dir].tried = true;
-//       hit.tried[dir].successful = false;
-//     } else if (dir !== null && val === 1) {
-//       hit.tried[dir].tried = true;
-//       hit.tried[dir].successful = true;
-//     }
-
-//     if (val !== 1) {
-//       changePlayerTurn();
-//     } else {
-//       console.log("again");
-//       if (hit.initial.row === null && hit.initial.col === null) {
-//         hit.initial.row = guessRow;
-//         hit.initial.col = guessCol;
-//         if (
-//           guessRow - 1 >= 0 &&
-//           (getSquare1Value(guessRow - 1, guessCol) === 0 ||
-//             getSquare1Value(guessRow - 1, guessCol) === 1)
-//         ) {
-//           hit.row = guessRow - 1;
-//           hit.col = guessCol;
-//           if (getSquare1Value(hit.row, hit.col) === 1) {
-//             hit.tried.n = true;
-//           } else {
-//             hit.tried.s = true;
-//             hit.missed = true;
-//           }
-//         } else if (
-//           guessRow + 1 <= 9 &&
-//           (getSquare1Value(guessRow + 1, guessCol) === 0 ||
-//             getSquare1Value(guessRow + 1, guessCol) === 1)
-//         ) {
-//           hit.row = guessRow + 1;
-//           hit.col = guessCol;
-//           if (getSquare1Value(hit.row, hit.col) === 1) {
-//             hit.tried.s = true;
-//           }
-//         } else if (
-//           guessCol + 1 <= 9 &&
-//           (getSquare1Value(guessRow, guessCol + 1) === 0 ||
-//             getSquare1Value(guessRow, guessCol + 1) === 1)
-//         ) {
-//           hit.row = guessRow;
-//           hit.col = guessCol + 1;
-//           if (getSquare1Value(hit.row, hit.col) === 1) {
-//             hit.tried.e = true;
-//           }
-//         } else if (
-//           guessCol - 1 >= 0 &&
-//           (getSquare1Value(guessRow, guessCol - 1) === 0 ||
-//             getSquare1Value(guessRow, guessCol - 1) === 1)
-//         ) {
-//           hit.row = guessRow;
-//           hit.col = guessCol - 1;
-//           if (getSquare1Value(hit.row, hit.col) === 1) {
-//             hit.tried.w = true;
 hit.tried.wfirst = true;
-console.log("wfirst 1");
-//           }
-//         }
-//       } else if (hit.tried.n) {
-//         console.log("hihihi", { guessRow });
-//         if (hit.missed) {
-//           for (dir in hit.tried) {
-//             if (hit.tried[dir]) {
-//               if (dir === "n" && hit.initial.row + 1 <= 9) {
-//                 guessCol = hit.initial.col;
-//                 guessRow = hit.initial.row + 1;
-//               }
-//             }
-//           }
-//         } else if (
-//           !hit.missed &&
-//           guessRow - 1 >= 0 &&
-//           (getSquare1Value(guessRow - 1, guessCol) === 0 ||
-//             getSquare1Value(guessRow - 1, guessCol) === 1)
-//         ) {
-//           hit.row = guessRow - 1;
-//           hit.col = guessCol;
-//           if (getSquare1Value(hit.row, hit.col) === 0) {
-//             hit.missed = true;
-//           }
-//         } else if (
-//           getSquare1Value(hit.initial.row + 1, hit.initial.col) === 0 ||
-//           getSquare1Value(hit.initial.row + 1, hit.initial.col) === 1
-//         ) {
-//           hit.row = hit.initial.row + 1;
-//           hit.tried.n = false;
-//           hit.tried.s = true;
-//         }
-//       } else if (hit.tried.s) {
-//         console.log("hit s");
-//         if (
-//           guessRow + 1 <= 9 &&
-//           (getSquare1Value(guessRow + 1, guessCol) === 0 ||
-//             getSquare1Value(guessRow + 1, guessCol) === 1)
-//         ) {
-//           hit.row = guessRow + 1;
-//           hit.col = guessCol;
-//           if (getSquare1Value(guessRow + 1, guessCol) === 0) {
-//             hit.col = null;
-//             hit.row = null;
-//             hit.initial.col = null;
-//             hit.initial.row = null;
-//             hit.tried.s = false;
-//           }
-//         } else {
-//           while (guessRow < 0 || guessRow > 9) {
-//             guessRow = Math.round(Math.random() * 10);
-//           }
-//           console.log({ guessRow });
-//           while (guessCol < 0 || guessCol > 9) {
-//             guessCol = Math.round(Math.random() * 10);
-//           }
-//         }
-//       }
-
-//       aiMakeGuess();
-//     }
-//   }, 1000);
-// }
-
-// function aiMakeGuessHit() {
-//   let { row, col } = hit;
-
-//   if (
-//     (hit.tried.n.tried === false && row - 1 >= 0) ||
-//     hit.tried.n.successful == true
-//   ) {
-//     console.log("n");
-//     hit.row = row - 1;
-
-//     aiMakeGuess("n");
-//   } else if (
-//     (hit.tried.s.tried === false && row + 1 <= 9) ||
-//     hit.tried.s.successful == true
-//   ) {
-//     console.log("s");
-//     hit.row = row + 1;
-
-//     aiMakeGuess("s");
-//   } else if (
-//     (hit.tried.e.tried === false && col + 1 <= 9) ||
-//     hit.tried.e.successful == true
-//   ) {
-//     console.log("e");
-//     hit.col = col + 1;
-
-//     aiMakeGuess("e");
-//   } else if (
-//     (hit.tried.w.tried === false && col - 1 >= 0) ||
-//     hit.tried.w.successful == true
-//   ) {
-//     console.log("w");
-//     hit.col = col - 1;
-
-//     aiMakeGuess("w");
-//   }
-// }
 
 function displayActivePlayer() {
   if (player.active) {
@@ -656,11 +422,6 @@ function getStartingInfo() {
   request.open("GET", "data.json", false);
   request.send(null);
 
-  // THE FOLLOWING CHECK CAN BE COMMENTED OUT WHEN USED
-  // WITH A LOCAL FILE (DEPENDING ON YOUR BROWSER).  SAFARI ON A
-  // MAC RETURNS A STATUS OF ZERO WHEN USING XMLHttpRequest WITH
-  // A LOCAL FILE.
-
   if (request.status != 200) {
     alert("Request failed " + request.status + ": " + request.statusText);
     return;
@@ -670,13 +431,11 @@ function getStartingInfo() {
   let startObj = JSON.parse(startObjJSON);
   let randomNum1 = -1;
   let randomNum2 = -1;
-  console.log("hithit", startObj);
   while (randomNum1 < 0 || randomNum1 > 5) {
     randomNum1 = Math.round(Math.random() * 10);
   }
   while (randomNum2 < 0 || randomNum2 > 5) {
     randomNum2 = Math.round(Math.random() * 10);
-    console.log(randomNum1, randomNum2);
     if (randomNum1 === randomNum2) {
       randomNum2 = -1;
     }
@@ -689,23 +448,4 @@ function getStartingInfo() {
 
   playerTurn = startObj.playerTurn;
   gameOver = startObj.gameOver;
-
-  // THE FOLLOWING CODE USES THE SAME XML STRUCTURE (AND A FEW OF THE
-  // SAME VARIABLE NAMES) AS Example 21-7 IN JavaScript: The Definitive Guide
-  // BY DAVID FLANAGAN, BUT THIS EXAMPLE IS A LOT SIMPLER.
-
-  // var xmlrows = xmldoc.getElementsByTagName("contact");
-
-  // for (var r = 0; r < xmlrows.length; r++) {
-  //   var xmlrow = xmlrows[r];
-  //   html += "Name: " + xmlrow.getAttribute("name");
-
-  //   // NOTE THAT getElementsByTagName RETURNS A LIST
-  //   var xemail = xmlrow.getElementsByTagName("email")[0];
-  //   html += " Email: " + xemail.firstChild.data;
-
-  //   html += "<br>";
-  // }
-
-  // addressDiv.innerHTML = html;
 }

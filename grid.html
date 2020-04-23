@@ -13,40 +13,64 @@
     <h1 id="pageTitle">Battle Ship Game</h1>
     <h3 id="username"></h3>
     <p id="timestamp"></p>
-    <button onclick="clearLocal()">Clear LocalStorage</button>
+    <!-- <button onclick="clearLocal()">Clear LocalStorage</button>
     <div id="shipDiv">
       <img
         id="shipImg"
         src="./free-transparent-background-png-clipart-imrox.jpg"
       />
+    </div> -->
+    <div id="inputDiv">
+      <div>
+        <input onchange="addName()" type="text" id="nameInput" />
+        <button onclick="addName()">Add Name</button>
+      </div>
+      <!-- <button onclick="startMove()">Move Ship Picture</button> -->
+      <button onclick="newGame()">New Game/New Board</button>
+      <div id="colorDiv">
+        <p>Pick a color for your ships:</p>
+        <div>
+          <label for="green">Green</label>
+          <input
+            type="radio"
+            id="green"
+            value="green"
+            name="shipColor"
+            onchange="colorPick(event)"
+          />
+          <label for="orange">Orange</label>
+          <input
+            type="radio"
+            id="orange"
+            value="orange"
+            name="shipColor"
+            onchange="colorPick(event)"
+          />
+          <label for="blue">Blue</label>
+          <input
+            type="radio"
+            id="brown"
+            value="blue"
+            name="shipColor"
+            onchange="colorPick(event)"
+          />
+        </div>
+      </div>
+      <audio controls autoplay loop="true" id="tigerAudio">
+        <source src="tiger.mp3" type="audio/mpeg" />
+        Your browser does not support the audio tag.
+      </audio>
     </div>
-    <input onchange="addName()" type="text" id="nameInput" />
-    <button onclick="addName()">Add Name</button>
-    <button onclick="startMove()">Move Ship Picture</button>
-    <label for="green">Green</label>
-    <input
-      type="radio"
-      id="green"
-      value="green"
-      name="shipColor"
-      onchange="colorPick(event)"
-    />
-    <label for="orange">Orange</label>
-    <input
-      type="radio"
-      id="orange"
-      value="orange"
-      name="shipColor"
-      onchange="colorPick(event)"
-    />
-    <label for="blue">Blue</label>
-    <input
-      type="radio"
-      id="brown"
-      value="blue"
-      name="shipColor"
-      onchange="colorPick(event)"
-    />
+    <div>
+      <canvas id="canvas1" width="300" height="250"> </canvas>
+
+      <video id="explosionVid" width="300" height="300" loop controls>
+        <source src="Explosion.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <canvas id="canvas2" width="300" height="250"> </canvas>
+    </div>
+
     <h1 id="gameOver"></h1>
     <h3 id="playerTurn">Turn:</h3>
     <div id="board1">
