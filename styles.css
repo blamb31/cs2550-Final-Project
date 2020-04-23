@@ -79,3 +79,21 @@ body {
 #canvas2 {
   margin-left: 75px;
 }
+.borders {
+  border: 5px dashed black;
+  margin: 1rem;
+  padding: 1rem;
+}
+
+#scoringTable td,
+#scoringTable th,
+#scoringTable {
+  border: 2px solid black;
+}
+#scoringTable {
+  width: 100%;
+}
+th,
+td {
+  padding: 5px;
+}
