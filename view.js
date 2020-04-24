@@ -85,6 +85,10 @@ function addOnClick(element, row, col, targetEl, forGrid) {
       element.className = "hit space";
       element.innerHTML = "HIT";
       changeValue(row - 1, col - 1, 3);
+      let isSunk = isShipSunk(row - 1, col - 1);
+      if (isSunk) {
+        alert("You have sunk a ship of the computer's!!");
+      }
       let stop = checkIfGameOver();
       if (stop) {
         return;

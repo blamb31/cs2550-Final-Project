@@ -40,12 +40,10 @@ function drawStar(ctx) {
 }
 function playAudio() {
   tigerAud = document.getElementById("tigerAudio");
-  console.log(tigerAud);
-  console.log(tigerAud.play);
+
   tigerAud.play();
 
   explosionVid = document.getElementById("explosionVid");
-  console.log(explosionVid);
   explosionVid.play();
   var canvas = document.getElementById("canvas1");
   var c1 = canvas.getContext("2d");
@@ -55,9 +53,7 @@ function playAudio() {
   drawStar(c2);
 }
 const body = document.getElementsByTagName("body");
-console.log(body);
 document.addEventListener("click", function () {
-  console.log("The window loaded");
   playAudio();
 });
 function newGame() {
@@ -76,7 +72,11 @@ function getSquare1Value(row, col) {
   }
 }
 function getSquare2Value(row, col) {
-  return player2.grid[row][col];
+  if ((row || col) < 0 || (row || col) > 9) {
+    return null;
+  } else {
+    return player2.grid[row][col];
+  }
 }
 
 function changeValue(row, col, value) {
@@ -393,6 +393,89 @@ function displayActivePlayer() {
   } else {
     const playerTurnDisp = document.getElementById("playerTurn");
     playerTurnDisp.innerHTML = ` Turn: Computer`;
+  }
+}
+
+function isShipSunk(row, col) {
+  if (
+    (getSquare2Value(row + 1, col) !== null ||
+      getSquare2Value(row - 1, col) !== null ||
+      getSquare2Value(row, col + 1) !== null ||
+      getSquare2Value(row, col - 1) !== null) &&
+    (getSquare2Value(row + 1, col) === 1 ||
+      getSquare2Value(row - 1, col) === 1 ||
+      getSquare2Value(row, col + 1) === 1 ||
+      getSquare2Value(row, col - 1) === 1)
+  ) {
+    return false;
+  } else if (
+    getSquare2Value(row + 1, col) === 3 ||
+    getSquare2Value(row - 1, col) === 3
+  ) {
+    let newrow = row + 1;
+    let val = getSquare2Value(newrow, col);
+    while (val === 1 || val === 3) {
+      if (val === 1) {
+        return false;
+      } else if (val === 3) {
+        newrow++;
+        if (newrow <= 9) {
+          val = getSquare2Value(newrow, col);
+        } else {
+          val = 0;
+        }
+      }
+    }
+    newrow = row - 1;
+    val = getSquare2Value(newrow, col);
+
+    while (val === 1 || val === 3) {
+      if (val === 1) {
+        return false;
+      } else if (val === 3) {
+        newrow--;
+        if (newrow >= 0) {
+          val = getSquare2Value(newrow, col);
+        } else {
+          val = 0;
+        }
+      }
+    }
+
+    return true;
+  } else if (
+    getSquare2Value(row, col + 1) === 3 ||
+    getSquare2Value(row, col - 1) === 3
+  ) {
+    let newcol = col + 1;
+    let val = getSquare2Value(newcol, col);
+    while (val === 1 || val === 3) {
+      if (val === 1) {
+        return false;
+      } else if (val === 3) {
+        newcol++;
+        if (newcol <= 9) {
+          val = getSquare2Value(newcol, col);
+        } else {
+          val = 0;
+        }
+      }
+    }
+    newcol = col - 1;
+    val = getSquare2Value(newcol, col);
+    while (val === 1 || val === 3) {
+      if (val === 1) {
+        return false;
+      } else if (val === 3) {
+        newcol--;
+        if (newcol >= 0) {
+          val = getSquare2Value(newcol, col);
+        } else {
+          val = 0;
+        }
+      }
+    }
+    return true;
   }
 }
 
